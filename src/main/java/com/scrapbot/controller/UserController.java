@@ -29,6 +29,7 @@ public class UserController {
 	@Autowired
 	private final UserService userService = null;
 
+	
 	// 예제
 	@GetMapping("/user")
 	@ApiOperation(httpMethod = "GET", value = "사용자 목록 조회", notes = "사용자 목록을 조회하는 API")
