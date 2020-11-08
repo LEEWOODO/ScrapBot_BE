@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scrapbot.config.ApiResponseMessage;
 import com.scrapbot.entity.NewsArticle;
 import com.scrapbot.service.NewsArticleService;
 
@@ -70,6 +73,21 @@ public class NewsArticleController {
 	public List<NewsArticle> findByRegdate(@PathVariable("regdate") String regdate){
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
 		return newsArticleService.findByRegdateIs(regdate);
+	}
+	@RequestMapping(value = "articles/delete/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "사용자 정보 삭제", notes = "사용자 정보를 삭제하는 API. User entity 클래스의 id 값으로 데이터를 삭제한다.")
+	public ResponseEntity<ApiResponseMessage> deleteArticle(@PathVariable("id") Long id) {
+		ApiResponseMessage message = new ApiResponseMessage("Success", "삭제되었습니다.", "", "");
+		ResponseEntity<ApiResponseMessage> response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+		try {
+			newsArticleService.deleteArticle(id);
+		} catch (Exception ex) {
+			message = new ApiResponseMessage("Failed", "사용자 정보 삭제에 실패하였습니다.", "ERROR00003",
+					"Fail to remove for user information.");
+			response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+
 	}
 	
 }

@@ -29,4 +29,8 @@ public class Keyword {
 	@Setter
 	@Getter
 	private User user;
+	
+	public Keyword(String string) {
+		setKeyword(string);
+	}
 }

@@ -17,5 +17,6 @@ public interface NewsArticleRepository extends CrudRepository<NewsArticle, Long>
 
 	List<NewsArticle> findByRegdateIs(String regdate);
 	
+	
 }
 
