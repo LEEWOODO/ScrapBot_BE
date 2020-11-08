@@ -37,6 +37,7 @@ public class UserController {
 
 	@Autowired
 	private final UserService userService = null;
+	
 	@Autowired
 	private final NewsCompanyService newsCompanyService = null;
 

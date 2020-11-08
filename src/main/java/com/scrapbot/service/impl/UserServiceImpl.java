@@ -26,8 +26,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	NewsComapnyRepository comapnyRepository;
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -115,7 +113,7 @@ public class UserServiceImpl implements UserService {
 		logger.info("CompanyName : ");
 		user.removeCompany(company);
 		logger.info("CompanyName : "+company.getCompanyName()+"삭제 함");
-		
+	
 		userRepository.save(user);
 		logger.info("update successes");
 	}

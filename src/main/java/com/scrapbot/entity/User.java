@@ -42,7 +42,7 @@ public class User {
 //	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //	@OrderColumn(name = "keywords_index")
 	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> keywords = new ArrayList<String>();
+	private Set<String> keywords = new HashSet<String>();
 
 	public void addKeyword(String keyword) {
 		keywords.add(keyword);
@@ -82,11 +82,11 @@ public class User {
 	@Getter
 	private String grade;
 
-	public List<String> getKeywords() {
+	public Set<String> getKeywords() {
 		return keywords;
 	}
 
-	public void setKeywords(List<String> keywords) {
+	public void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
 	}
 
