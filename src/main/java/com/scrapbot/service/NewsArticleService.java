@@ -1,10 +1,13 @@
 package com.scrapbot.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.scrapbot.entity.NewsArticle;
+import com.scrapbot.entity.NewsCompany;
 
 public interface NewsArticleService {
 
@@ -28,5 +31,7 @@ public interface NewsArticleService {
 	
 	/** * 신문사 날짜별 목록 조회 * @param regdate */
 	public List<NewsArticle> findByRegdateIs(String regdate);
+
+	public List<NewsArticle> findByCompaniesAndDate(Set<NewsCompany> companies, String date);
 	
 }

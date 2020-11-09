@@ -1,7 +1,9 @@
 package com.scrapbot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scrapbot.config.ApiResponseMessage;
+import com.scrapbot.entity.NewsArticle;
+import com.scrapbot.entity.NewsCompany;
 import com.scrapbot.entity.User;
-import com.scrapbot.repository.UserRepository;
+import com.scrapbot.service.NewsArticleService;
 import com.scrapbot.service.NewsCompanyService;
 import com.scrapbot.service.UserService;
 
@@ -37,10 +39,12 @@ public class UserController {
 
 	@Autowired
 	private final UserService userService = null;
-	
+
 	@Autowired
 	private final NewsCompanyService newsCompanyService = null;
-
+	
+	@Autowired
+	private final NewsArticleService articleService = null;
 
 	// 예제
 	@GetMapping("/user")
@@ -156,7 +160,7 @@ public class UserController {
 		// 에러발생시 실패 메서지로 교체
 		ResponseEntity<ApiResponseMessage> response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
 		logger.info("response obj created success");
-		
+
 		try {
 			userService.addNewsCompany(userid, newsCompanyService.selectCompany(companyid).get());
 		} catch (Exception e) {
@@ -166,31 +170,36 @@ public class UserController {
 		}
 		return response;
 	}
-	
-	
-	// REST API 만들기
-		// 유저에게 신문사 정보를 추가하는 REST API.
-		@RequestMapping(value = "/user/news-comany/sub", method = RequestMethod.PUT)
-		@ApiOperation(httpMethod = "PUT", value = "add companyList User", notes = "an REST API adding comany object to user")
-		public ResponseEntity<ApiResponseMessage> subNewsCompany(@RequestParam(value = "userid") Long userid,
-				@RequestParam(value = "companyid") Long companyid) {
-			ApiResponseMessage message = new ApiResponseMessage("Success", "뉴스정보가 삭제되었습니다.", "", "");
-			// 응답시 돌려줄 객체 생성 - 초기값은 성공으로 세팅
-			// 에러발생시 실패 메서지로 교체
-			ResponseEntity<ApiResponseMessage> response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
-			logger.info("response obj created success");
-			
-			try {
-				userService.subNewsCompany(userid, newsCompanyService.selectCompany(companyid).get());
-			} catch (Exception e) {
-				message = new ApiResponseMessage("Failed", "뉴스정보 삭제에 실패하였습니다.", "ERROR00003",
-						"Fail to remove for user information.");
-				response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			return response;
-		}
-	
-	
-	
 
+	// REST API 만들기
+	// 유저에게 신문사 정보를 추가하는 REST API.
+	@RequestMapping(value = "/user/news-comany/sub", method = RequestMethod.PUT)
+	@ApiOperation(httpMethod = "PUT", value = "add companyList User", notes = "an REST API adding comany object to user")
+	public ResponseEntity<ApiResponseMessage> subNewsCompany(@RequestParam(value = "userid") Long userid,
+			@RequestParam(value = "companyid") Long companyid) {
+		ApiResponseMessage message = new ApiResponseMessage("Success", "뉴스정보가 삭제되었습니다.", "", "");
+		// 응답시 돌려줄 객체 생성 - 초기값은 성공으로 세팅
+		// 에러발생시 실패 메서지로 교체
+		ResponseEntity<ApiResponseMessage> response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+		logger.info("response obj created success");
+
+		try {
+			userService.subNewsCompany(userid, newsCompanyService.selectCompany(companyid).get());
+		} catch (Exception e) {
+			message = new ApiResponseMessage("Failed", "뉴스정보 삭제에 실패하였습니다.", "ERROR00003",
+					"Fail to remove for user information.");
+			response = new ResponseEntity<ApiResponseMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+
+	@GetMapping("/user/contents/{id}/{date}")
+	@ApiOperation(httpMethod = "GET", value = "사용자에게 스크랩 결과를 보여줌", notes = "스크랩 결과를 보여줌 API. User entity 클래스의 id값을 기준으로 데이터를 가져온다.")
+	public List<NewsArticle> getUserContents(@PathVariable("id") Long id,@PathVariable("date") String date) {
+		User user = userService.selectUser(50001l).get();
+		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(),date);
+		articles=userService.filterArticlesByKeywords(articles,user.getKeywords());
+		return articles;
+	}
+	
 }

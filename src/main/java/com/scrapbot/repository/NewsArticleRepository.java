@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.scrapbot.entity.NewsArticle;
+import com.scrapbot.entity.NewsCompany;
 
 
 @Repository
@@ -17,6 +18,11 @@ public interface NewsArticleRepository extends CrudRepository<NewsArticle, Long>
 
 	List<NewsArticle> findByRegdateIs(String regdate);
 	
+	List<NewsArticle> findByNewscompanyIdInAndRegdate(List<String> newscompanyIds,String regdate);
+	
+	List<NewsArticle> findByNewscompanyIdIn(List<String> newscompanyIds);
+	
+	List<NewsArticle> findByRegdate(String regdate);
 	
 }
 
