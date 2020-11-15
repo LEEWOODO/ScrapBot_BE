@@ -23,6 +23,9 @@ public class NewsArticle {
 
 	@Column(name = "newcompany")
 	private String newcompany;
+	
+	@Column
+	private String newscompanyId;
 
 	@Column(name = "title")
 	private String title;
@@ -35,9 +38,9 @@ public class NewsArticle {
 
 	@Column(name = "urlpath")
 	private String url;
-
-//	@Column
-//	private String text;
+ 
+	@Column
+	private String text;
 
 	@Column
 	private String regdate;

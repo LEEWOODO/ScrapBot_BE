@@ -2,7 +2,9 @@ package com.scrapbot.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.scrapbot.entity.NewsArticle;
 import com.scrapbot.entity.NewsCompany;
 import com.scrapbot.entity.User;
 
@@ -34,6 +36,8 @@ public interface UserService {
 	public void addNewsCompany(Long userid, NewsCompany company);
 
 	public void subNewsCompany(Long userid, NewsCompany newsCompany);
+
+	public List<NewsArticle> filterArticlesByKeywords(List<NewsArticle> articles, Set<String> keywords);
 
 }
  
