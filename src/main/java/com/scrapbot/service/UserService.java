@@ -25,7 +25,7 @@ public interface UserService {
 	/** * 사용자 삭제 * @param uid */
 	public void deleteUser(Long id);
 
-	public List<User> findByEmail(String email);
+	public Optional<User> findByEmail(String email);
 	
 	/** * 사용자 키워드 추가 */
 	public void addKeyword(Long id, String keyWord);
@@ -37,7 +37,7 @@ public interface UserService {
 
 	public void subNewsCompany(Long userid, NewsCompany newsCompany);
 
-	public List<NewsArticle> filterArticlesByKeywords(List<NewsArticle> articles, Set<String> keywords);
+	public Set<NewsArticle> filterArticlesByKeywords(List<NewsArticle> articles, Set<String> keywords);
 
 }
  

@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> findByEmail(String email) {
+	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
@@ -121,12 +121,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<NewsArticle> filterArticlesByKeywords(List<NewsArticle> articles, Set<String> keywords) {
+	public Set<NewsArticle> filterArticlesByKeywords(List<NewsArticle> articles, Set<String> keywords) {
 		// TODO Auto-generated method stub
 
 		return keywords.stream()
 				.flatMap(keyword -> articles.stream().filter(article -> article.getText().contains(keyword)))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 		
 	}
 

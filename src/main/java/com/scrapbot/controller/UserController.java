@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scrapbot.config.ApiResponseMessage;
 import com.scrapbot.entity.NewsArticle;
-import com.scrapbot.entity.NewsCompany;
 import com.scrapbot.entity.User;
 import com.scrapbot.service.NewsArticleService;
 import com.scrapbot.service.NewsCompanyService;
@@ -108,8 +107,9 @@ public class UserController {
 
 	@GetMapping("/user/info/{email}")
 	@ApiOperation(httpMethod = "GET", value = "email 별 유저 조회", notes = "email 별 유저 조회api")
-	public List<User> findByRegdate(@PathVariable("email") String email, @RequestParam(value = "year") String year) {
+	public Optional<User> findByRegdate(@PathVariable("email") String email ) {
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
+		logger.info(userService.findByEmail(email).toString());
 		return userService.findByEmail(email);
 	}
 
@@ -196,10 +196,11 @@ public class UserController {
 	@GetMapping("/user/contents/{id}/{date}")
 	@ApiOperation(httpMethod = "GET", value = "사용자에게 스크랩 결과를 보여줌", notes = "스크랩 결과를 보여줌 API. User entity 클래스의 id값을 기준으로 데이터를 가져온다.")
 	public List<NewsArticle> getUserContents(@PathVariable("id") Long id,@PathVariable("date") String date) {
-		User user = userService.selectUser(50001l).get();
+		User user = userService.selectUser(id).get();
 		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(),date);
-		articles=userService.filterArticlesByKeywords(articles,user.getKeywords());
-		return articles;
+		Set<NewsArticle>articlesSet=userService.filterArticlesByKeywords(articles,user.getKeywords());
+		articlesSet.stream().map(NewsArticle::getTitle).forEach(System.out::println);;
+		return  new ArrayList<>(articlesSet);
 	}
 	
 }
