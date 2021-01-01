@@ -36,7 +36,7 @@ public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Autowired 
 	private final UserService userService = null;
 
 	@Autowired
