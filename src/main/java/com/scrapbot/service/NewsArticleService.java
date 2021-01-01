@@ -34,4 +34,5 @@ public interface NewsArticleService {
 
 	public List<NewsArticle> findByCompaniesAndDate(Set<NewsCompany> companies, String date);
 	
+	public List<NewsArticle> findByCompanies(Set<NewsCompany> companies);
 }

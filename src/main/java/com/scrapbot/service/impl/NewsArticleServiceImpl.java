@@ -80,4 +80,11 @@ public class NewsArticleServiceImpl implements NewsArticleService {
 		return ImmutableList.copyOf(newsArticleRepostitory.findByNewscompanyIdInAndRegdate(list,date));
 	}
 
+	@Override
+	public List<NewsArticle> findByCompanies(Set<NewsCompany> companies) {
+		List<String> list = companies.stream().map(NewsCompany::getCompanyIdOnNaver).collect(Collectors.toList());
+		
+		return ImmutableList.copyOf(newsArticleRepostitory.findByNewscompanyIdIn(list));
+	}
+
 }

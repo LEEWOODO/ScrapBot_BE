@@ -41,7 +41,7 @@ public class UserController {
 
 	@Autowired
 	private final NewsCompanyService newsCompanyService = null;
-	
+
 	@Autowired
 	private final NewsArticleService articleService = null;
 
@@ -107,7 +107,7 @@ public class UserController {
 
 	@GetMapping("/user/info/{email}")
 	@ApiOperation(httpMethod = "GET", value = "email 별 유저 조회", notes = "email 별 유저 조회api")
-	public Optional<User> findByRegdate(@PathVariable("email") String email ) {
+	public Optional<User> findByRegdate(@PathVariable("email") String email) {
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
 		logger.info(userService.findByEmail(email).toString());
 		return userService.findByEmail(email);
@@ -195,12 +195,14 @@ public class UserController {
 
 	@GetMapping("/user/contents/{id}/{date}")
 	@ApiOperation(httpMethod = "GET", value = "사용자에게 스크랩 결과를 보여줌", notes = "스크랩 결과를 보여줌 API. User entity 클래스의 id값을 기준으로 데이터를 가져온다.")
-	public List<NewsArticle> getUserContents(@PathVariable("id") Long id,@PathVariable("date") String date) {
+	public List<NewsArticle> getUserContents(@PathVariable("id") Long id, @PathVariable("date") String date) {
 		User user = userService.selectUser(id).get();
-		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(),date);
-		Set<NewsArticle>articlesSet=userService.filterArticlesByKeywords(articles,user.getKeywords());
-		articlesSet.stream().map(NewsArticle::getTitle).forEach(System.out::println);;
-		return  new ArrayList<>(articlesSet);
+
+		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(), date);
+
+		Set<NewsArticle> articlesSet = userService.filterArticlesByKeywords(articles, user.getKeywords());
+
+		return new ArrayList<>(articlesSet);
 	}
-	
+
 }
