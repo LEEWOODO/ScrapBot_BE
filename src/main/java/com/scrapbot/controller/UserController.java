@@ -110,8 +110,11 @@ public class UserController {
 	public Optional<User> findByRegdate(@PathVariable("email") String email) {
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
 		logger.info(userService.findByEmail(email).toString());
-		if(userService.findByEmail(email)==null)
+		
+		
+		if(!userService.findByEmail(email).isPresent())
 		{
+			System.out.println("dkddfdfdfd");
 			User user = new User();
 			user.setEmail(email);
 			user.setGrade("브론즈");
