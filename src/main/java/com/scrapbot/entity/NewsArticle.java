@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name = "articletable")
-public class NewsArticle {
+public class NewsArticle  implements Comparable<NewsArticle>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -45,5 +45,10 @@ public class NewsArticle {
 	@Column
 	private String regdate;
 
+
+    @Override
+    public int compareTo(NewsArticle o) {
+        return this.newcompany.compareTo(o.newcompany);
+    }
 
 }

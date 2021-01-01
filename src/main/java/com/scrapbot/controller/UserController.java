@@ -1,6 +1,7 @@
 package com.scrapbot.controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -110,10 +111,8 @@ public class UserController {
 	public Optional<User> findByRegdate(@PathVariable("email") String email) {
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
 		logger.info(userService.findByEmail(email).toString());
-		
-		
-		if(!userService.findByEmail(email).isPresent())
-		{
+
+		if (!userService.findByEmail(email).isPresent()) {
 			System.out.println("dkddfdfdfd");
 			User user = new User();
 			user.setEmail(email);
@@ -211,8 +210,11 @@ public class UserController {
 		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(), date);
 
 		Set<NewsArticle> articlesSet = userService.filterArticlesByKeywords(articles, user.getKeywords());
+		Comparator<NewsArticle> compareByFirstNames = Comparator.comparing(NewsArticle::getNewcompany);
+		ArrayList<NewsArticle> resultList = new ArrayList<>(articlesSet);
+		resultList.sort(compareByFirstNames);
 
-		return new ArrayList<>(articlesSet);
+		return resultList;
 	}
 
 }

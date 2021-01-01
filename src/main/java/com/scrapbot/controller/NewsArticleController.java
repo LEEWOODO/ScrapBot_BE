@@ -73,6 +73,7 @@ public class NewsArticleController {
 	public List<NewsArticle> findByRegdate(@PathVariable("regdate") String regdate){
 		// string like 는 containing 을 이용하는것이 잘 되는듯. 개인적인 우도 생각
 		return newsArticleService.findByRegdateIs(regdate);
+		
 	}
 	@RequestMapping(value = "articles/delete/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "사용자 정보 삭제", notes = "사용자 정보를 삭제하는 API. User entity 클래스의 id 값으로 데이터를 삭제한다.")
