@@ -206,7 +206,7 @@ public class UserController {
 	@ApiOperation(httpMethod = "GET", value = "사용자에게 스크랩 결과를 보여줌", notes = "스크랩 결과를 보여줌 API. User entity 클래스의 id값을 기준으로 데이터를 가져온다.")
 	public List<NewsArticle> getUserContents(@PathVariable("id") Long id, @PathVariable("date") String date) {
 		User user = userService.selectUser(id).get();
-
+		logger.info("date :" +date);
 		List<NewsArticle> articles = articleService.findByCompaniesAndDate(user.getNewsCompanySet(), date);
 
 		Set<NewsArticle> articlesSet = userService.filterArticlesByKeywords(articles, user.getKeywords());
